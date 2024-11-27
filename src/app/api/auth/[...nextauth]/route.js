@@ -4,7 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 
-
 const prisma = new PrismaClient();
 
 const handler = NextAuth({
@@ -38,13 +37,16 @@ const handler = NextAuth({
               name: email.split("@")[0],
               role: "USER",
               password: await bcrypt.hash(password, 10),
-              company: company
+              company: company,
             },
           });
 
           return user;
         } else {
-          const isValid = await bcrypt.compare(password, existingUser.password);
+          const isValid = await bcrypt.compare(
+            password,
+            existingUser?.password || ""
+          );
 
           if (!isValid) {
             throw new Error("Incorrect password");
@@ -54,6 +56,9 @@ const handler = NextAuth({
       },
     }),
   ],
+  session: {
+    jwt: true,
+  },
   callbacks: {
     async signIn({ user }) {
       try {
@@ -89,9 +94,8 @@ const handler = NextAuth({
         });
         if (dbUser) {
           token.role = dbUser.role;
-          token.company = dbUser.company
+          token.company = dbUser.company;
         }
-
       }
       return token;
     },
@@ -103,7 +107,9 @@ const handler = NextAuth({
       return session;
     },
   },
-
+  pages: {
+    signIn: "/",
+  },
 
   secret: process.env.NEXTAUTH_SECRET,
 });

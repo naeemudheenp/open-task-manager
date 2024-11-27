@@ -36,10 +36,16 @@ export function FormCompanyName() {
     }
 
     try {
-      await axios.patch("/api/add-company-name", {
-        email: session.data.user.email,
-        company: company,
-      });
+      await axios.patch(
+        "/api/add-company-name",
+        {
+          email: session.data.user.email,
+          company: company,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       await signIn("google", {
         redirect: false,
@@ -73,7 +79,9 @@ export function FormCompanyName() {
           {" "}
           Submit
         </button>
-        <p>You will be asked to auhtenticate again to conform the changes.</p>
+        <p className=" text-sm">
+          You will be asked to auhtenticate again to conform the changes.
+        </p>
       </div>
       <Toaster />
     </section>

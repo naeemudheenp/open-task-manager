@@ -1,11 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 export async function hashPassword(password) {
   const saltRounds = 10;
   return await bcrypt.hash(password, saltRounds);
-
 }
 
 export async function POST(req) {
@@ -18,7 +17,7 @@ export async function POST(req) {
   try {
     const existingUser = await prisma.user.findUnique({
       where: {
-        email: email
+        email: email,
       },
     });
 
@@ -28,7 +27,7 @@ export async function POST(req) {
           email: email,
           name: email.split("@")[0],
           role: "USER",
-          password: await hashPassword(password)
+          password: await hashPassword(password),
         },
       });
     }
@@ -37,7 +36,5 @@ export async function POST(req) {
   } catch (error) {
     console.error("Error checking or creating user: ", error);
     return NextResponse.json({ status: 503 });
-
   }
-
 }
