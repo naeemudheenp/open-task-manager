@@ -12,8 +12,6 @@ export async function POST(req) {
   const body = await req.json();
   const { email, password } = body;
 
-  console.log(email, "emaildfdafda");
-
   try {
     const existingUser = await prisma.user.findUnique({
       where: {
