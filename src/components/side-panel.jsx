@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { securedRoutes } from "../constants/secured-routes";
-import { getRoleBasedRender } from "../app/helpers/getRoleBasedRender";
+import { getRoleBasedRender } from "../helpers/getRoleBasedRender";
 import { signOut, useSession } from "next-auth/react";
 
 export function SidePanel() {

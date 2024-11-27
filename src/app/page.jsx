@@ -8,7 +8,7 @@ import { HiQuestionMarkCircle } from "react-icons/hi2";
 import { useState } from "react";
 import { Toaster, toaster } from "@/components/ui/toaster";
 import axios from "axios";
-import { signInTypes } from "@/constants";
+import { apiList, signInTypes } from "@/constants";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -18,12 +18,21 @@ export default function Home() {
   const [isZeroAuth, setIsZeroAuth] = useState(false);
 
   async function handeSignup() {
-    if (password === "" || email === "" || company === "") {
+    if (password === "" || email === "") {
       toaster.create({
         title: "Error",
         description: "Please enter username and password",
       });
       return;
+    }
+    if (!isUserRegistered) {
+      if (company === "") {
+        toaster.create({
+          title: "Error",
+          description: "Please enter company",
+        });
+        return;
+      }
     }
     try {
       await signIn("credentials", {
@@ -48,7 +57,7 @@ export default function Home() {
 
   async function checkUserAlreadyRegistered() {
     const response = await axios.get(
-      `/api/check-user-already-registered?email=${email}`
+      `${apiList.checkUserIsAlreadyRegistered.api}?email=${email}`
     );
     if (response.data.signType !== signInTypes.none) {
       setIsUserRegistered(true);

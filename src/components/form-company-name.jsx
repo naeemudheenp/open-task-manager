@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Toaster, toaster } from "@/components/ui/toaster";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import { apiList } from "@/constants";
 export function FormCompanyName() {
   const [company, setCompany] = useState("");
   const session = useSession();
@@ -34,7 +35,7 @@ export function FormCompanyName() {
 
     try {
       await axios.patch(
-        "/api/add-company-name",
+        apiList.addCompanyName.api,
         {
           email: session.data.user.email,
           company: company,

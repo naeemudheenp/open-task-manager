@@ -25,9 +25,7 @@ const handler = NextAuth({
         //Credential mode
         const { email, password, company } = credentials;
 
-        if (!email || !password || !company) {
-          throw new Error("Email and password are required");
-        }
+
 
         let existingUser = await prisma.user.findUnique({
           where: { email },
@@ -52,9 +50,11 @@ const handler = NextAuth({
 
           return user;
         } else {
+          console.log(existingUser?.password, "password");
+
           const isValid = await bcrypt.compare(
             password,
-            existingUser?.password || ""
+            existingUser?.password
           );
 
           if (!isValid) {
@@ -124,6 +124,8 @@ const handler = NextAuth({
 
   pages: {
     signIn: "/",
+    error: "/login-error",
+    signOut: '/'
   },
 
   secret: process.env.NEXTAUTH_SECRET,
