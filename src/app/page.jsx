@@ -2,12 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
-import SignInButton from "./components/sign-in-button";
+import SignInButton from "../components/sign-in-button";
 import { Tooltip } from "@/components/ui/tooltip";
 import { HiQuestionMarkCircle } from "react-icons/hi2";
 import { useState } from "react";
 import { Toaster, toaster } from "@/components/ui/toaster";
 import axios from "axios";
+import { signInTypes } from "@/constants";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -49,9 +50,9 @@ export default function Home() {
     const response = await axios.get(
       `/api/check-user-already-registered?email=${email}`
     );
-    if (response.data.signType !== "none") {
+    if (response.data.signType !== signInTypes.none) {
       setIsUserRegistered(true);
-      if (response.data.signType === "0auth") {
+      if (response.data.signType === signInTypes.zeroAuth) {
         setIsZeroAuth(true);
       } else {
         setIsZeroAuth(false);
@@ -64,7 +65,7 @@ export default function Home() {
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className="  bg-white w-[400px]   text-black rounded-2xl p-9 px-2 flex justify-center items-center flex-col  gap-9">
+      <div className="  bg-white w-[400px]   text-black rounded-2xl p-9 px-2 flex justify-center items-center flex-col  gap-4">
         <div className=" text-xl">openTaskManager</div>
         <div className=" flex flex-col gap-4">
           <input
@@ -92,6 +93,14 @@ export default function Home() {
               isUserRegistered && "h-0 max-h-0 opacity-0"
             } `}
           />
+          <p
+            className={`${
+              isUserRegistered && " text-center h-0 max-h-0 opacity-0"
+            }   text-xs text-black `}
+          >
+            The company's first registered member will automatically <br></br>{" "}
+            be assigned the <span className=" font-bold">Admin role</span>.
+          </p>
         </div>
 
         <Button

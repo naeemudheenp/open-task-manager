@@ -1,8 +1,10 @@
+//Api to update company name
+
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-export async function PATCH(req, res) {
+export async function PATCH(req) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   if (!token) {
     return new Response("Unauthorized", { status: 401 });
@@ -19,22 +21,28 @@ export async function PATCH(req, res) {
     );
   }
 
+  let isCompanyExist = await prisma.user.findFirst({
+    where: { company: company },
+  });
+
   try {
-    const updatedUser = await prisma.user.update({
+    await prisma.user.update({
       where: { email: email },
-      data: { company: company },
+      data: {
+        company: company,
+        role: !isCompanyExist ? "ADMIN" : "USER",//Assigning admin role if the first user of the company.
+      },
     });
 
     return NextResponse.json(
-      { message: "Company name updated successfully.", user: updatedUser },
+      {},
       { status: 200 }
     );
   } catch (error) {
-    console.error(error);
+    console.error(error, "unable to add company");
     return NextResponse.json(
       {
         message: "An error occurred while updating the user.",
-        error: error.message,
       },
       { status: 500 }
     );

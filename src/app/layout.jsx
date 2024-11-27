@@ -23,7 +23,6 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased text-black !bg-gradient-to-br !from-gray-50 !to-gray-100`}
       >
         <Provider>
-          {" "}
           <SessionProvider>{children}</SessionProvider>
         </Provider>
       </body>

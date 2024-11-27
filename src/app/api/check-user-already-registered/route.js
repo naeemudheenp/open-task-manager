@@ -1,6 +1,9 @@
 
+//Checking is the user already registered or not , also login type.
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
+import { signInTypes } from "@/constants"
+
 export async function GET(req) {
   const prisma = new PrismaClient();
   const { searchParams } = new URL(req.url);
@@ -14,9 +17,9 @@ export async function GET(req) {
 
   if (existingUser) {
     if (existingUser.password) {
-      return NextResponse.json({ signType: 'password' }, { status: 200 })
+      return NextResponse.json({ signType: signInTypes.password }, { status: 200 })
     }
-    return NextResponse.json({ signType: '0auth' }, { status: 200 })
+    return NextResponse.json({ signType: signInTypes.zeroAuth }, { status: 200 })
   }
-  return NextResponse.json({ signType: 'none' }, { status: 200 })
+  return NextResponse.json({ signType: signInTypes.none }, { status: 200 })
 }

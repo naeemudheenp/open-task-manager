@@ -1,3 +1,5 @@
+//Next-auth config
+
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -10,7 +12,7 @@ const handler = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET, //using google as 0auth provider
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -20,6 +22,7 @@ const handler = NextAuth({
         company: { label: " company", type: "company" },
       },
       async authorize(credentials) {
+        //Credential mode
         const { email, password, company } = credentials;
 
         if (!email || !password || !company) {
@@ -29,14 +32,20 @@ const handler = NextAuth({
         let existingUser = await prisma.user.findUnique({
           where: { email },
         });
+        let isCompanyExist;
+        if (company) {
+          isCompanyExist = await prisma.user.findFirst({
+            where: { company: company },
+          });
+        }
 
         if (!existingUser) {
           const user = await prisma.user.create({
             data: {
               email: email,
               name: email.split("@")[0],
-              role: "USER",
-              password: await bcrypt.hash(password, 10),
+              role: !isCompanyExist ? "ADMIN" : "USER",//Making first user as admin
+              password: await bcrypt.hash(password, 10),//crypting password
               company: company,
             },
           });
@@ -59,10 +68,11 @@ const handler = NextAuth({
   session: {
     jwt: true,
   },
+
   callbacks: {
     async signIn({ user }) {
       try {
-        const existingUser = await prisma.user.findUnique({
+        let existingUser = await prisma.user.findUnique({
           where: { email: user.email },
         });
 
@@ -71,26 +81,30 @@ const handler = NextAuth({
             data: {
               name: user.name,
               email: user.email,
-              role: "USER",
             },
           });
         }
 
-        return existingUser;
+        return true;
       } catch (error) {
         console.error("Error checking or creating user: ", error);
         return false;
       }
     },
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user }) {
       if (user) {
         const dbUser = await prisma.user.findUnique({
           where: { email: user.email },
-          select: {
-            email: true,
-            company: true,
-            role: true,
-          },
+          select: { email: true, company: true, role: true },
+        });
+        if (dbUser) {
+          token.role = dbUser.role;
+          token.company = dbUser.company;
+        }
+      } else {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: token.email },
+          select: { email: true, company: true, role: true },
         });
         if (dbUser) {
           token.role = dbUser.role;
@@ -107,6 +121,7 @@ const handler = NextAuth({
       return session;
     },
   },
+
   pages: {
     signIn: "/",
   },

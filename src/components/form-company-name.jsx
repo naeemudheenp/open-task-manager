@@ -1,14 +1,11 @@
 "use client";
 import { useState } from "react";
 import { Toaster, toaster } from "@/components/ui/toaster";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import axios from "axios";
 export function FormCompanyName() {
   const [company, setCompany] = useState("");
-
   const session = useSession();
-
-  console.log(session, "session");
 
   if (session.status === "loading") {
     return (
@@ -46,15 +43,11 @@ export function FormCompanyName() {
           withCredentials: true,
         }
       );
-
-      await signIn("google", {
-        redirect: false,
-        callbackUrl: "/dashboard",
-      });
+      session.update();
       toaster.create({
         title: "Done",
       });
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       toaster.create({
         title: "Error",
@@ -79,7 +72,7 @@ export function FormCompanyName() {
           {" "}
           Submit
         </button>
-        <p className=" text-sm">
+        <p className=" text-sm text-center">
           You will be asked to auhtenticate again to conform the changes.
         </p>
       </div>

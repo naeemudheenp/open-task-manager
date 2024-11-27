@@ -1,4 +1,4 @@
-export const homeLinks = [
+export const securedRoutes = [
   {
     name: 'Employees',
     access: ['ADMIN'],

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { homeLinks } from "../constants/constants";
-import { getRoleBasedRender } from "../helpers/getRoleBasedRender";
+import { securedRoutes } from "../constants/secured-routes";
+import { getRoleBasedRender } from "../app/helpers/getRoleBasedRender";
 import { signOut, useSession } from "next-auth/react";
 
 export function SidePanel() {
@@ -26,7 +26,7 @@ export function SidePanel() {
   return (
     <div className=" relative flex basis-[21%] bg-[#fdf9f7] h-full  pl-5 pt-14 text-black flex-col gap-12">
       <h2 className=" text-3xl font-bold">openTaskManager</h2>
-      {homeLinks.map((item) => {
+      {securedRoutes.map((item) => {
         const userAccess = getRoleBasedRender(
           session?.data?.user?.role,
           item.access
