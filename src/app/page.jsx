@@ -13,9 +13,10 @@ import { Toaster, toaster } from "@/components/ui/toaster";
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [company, setCompany] = useState("");
 
   async function handeSignup() {
-    if (password === "" || email === "") {
+    if (password === "" || email === "" || company === "") {
       toaster.create({
         title: "Error",
         description: "Please enter username and password",
@@ -26,6 +27,7 @@ export default function Home() {
       await signIn("credentials", {
         email,
         password,
+        company,
         redirect: true,
         callbackUrl: "/dashboard",
       });
@@ -57,6 +59,12 @@ export default function Home() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             type="password"
+            className=" p-2 px-3  w-[310px] bg-transparent border-b border-black"
+          />
+          <input
+            onChange={(e) => setCompany(e.target.value)}
+            placeholder="Company name"
+            type="text"
             className=" p-2 px-3  w-[310px] bg-transparent border-b border-black"
           />
         </div>

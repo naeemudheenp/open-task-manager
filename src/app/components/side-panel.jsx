@@ -6,7 +6,6 @@ import { signOut, useSession } from "next-auth/react";
 
 export function SidePanel() {
   const session = useSession();
-  console.log(session, "session");
 
   if (session.status === "loading") {
     return (

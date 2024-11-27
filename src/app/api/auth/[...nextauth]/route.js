@@ -18,11 +18,12 @@ const handler = NextAuth({
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        company: { label: " company", type: "company" },
       },
       async authorize(credentials) {
-        const { email, password } = credentials;
+        const { email, password, company } = credentials;
 
-        if (!email || !password) {
+        if (!email || !password || !company) {
           throw new Error("Email and password are required");
         }
 
@@ -37,6 +38,7 @@ const handler = NextAuth({
               name: email.split("@")[0],
               role: "USER",
               password: await bcrypt.hash(password, 10),
+              company: company
             },
           });
 
@@ -75,20 +77,28 @@ const handler = NextAuth({
         return false;
       }
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         const dbUser = await prisma.user.findUnique({
           where: { email: user.email },
+          select: {
+            email: true,
+            company: true,
+            role: true,
+          },
         });
         if (dbUser) {
           token.role = dbUser.role;
+          token.company = dbUser.company
         }
+
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
         session.user.role = token.role;
+        session.user.company = token.company;
       }
       return session;
     },
