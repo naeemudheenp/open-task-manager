@@ -4,7 +4,9 @@ import { useSession } from "next-auth/react";
 import { SidePanel } from "../../components/side-panel";
 import { FormCompanyName } from "../../components/form-company-name";
 import { securedRoutes } from "@/constants";
+import { useUser } from "@/hooks/isUserAllowed";
 export default function Home() {
+  useUser();
   const session = useSession();
   if (session.status === "loading") {
     return (
