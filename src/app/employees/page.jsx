@@ -7,10 +7,14 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { Settings } from "lucide-react";
+import { Table } from "@chakra-ui/react";
+import { EditEmployeeModal } from "@/components/modals/edit-employee";
 
 export default function Employees() {
   const { data: session, status } = useSession();
   const [data, setData] = useState();
+  const [isModalStatus, setIsModalStatus] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({});
 
   async function getEmployees() {
     try {
@@ -27,11 +31,11 @@ export default function Employees() {
     if (session?.user?.company) {
       getEmployees();
     }
-  }, [session?.user?.company]);
+  }, [session?.user?.company, isModalStatus]);
 
   if (status === "loading") {
     return (
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center h-screen">
         <div className="bg-gradient-to-t from-black to-white animate-spin size-4 rounded-full aspect-square"></div>
       </div>
     );
@@ -42,41 +46,87 @@ export default function Employees() {
       {session ? (
         <>
           <SidePanel active={securedRoutes[1].name} />
-          <div className="pt-14 pl-16  text-black">
-            <h2 className="text-3xl font-bold"> Employee</h2>
+          <div className="pt-14 pl-16  text-white">
+            <h2 className="text-3xl font-bold text-black"> Employee</h2>
             {data ? (
-              <table className="mt-12 border rounded">
-                <tbody>
-                  <tr>
-                    <td className="border py-2 px-5 w-[300px]">Name</td>
-                    <td className="border py-2 px-5">Role</td>
-                    <td className="border py-2 px-5">Edit</td>
-                  </tr>
-                  {data?.map((item, index) => (
-                    <tr
-                      key={item.name}
-                      className={`${index % 2 === 0 && "bg-[#fdf9f7]"}`}
-                    >
-                      <td className=" py-2 px-5 w-[300px] flex gap-2">
-                        {item.name}
+              <div className="!text-black bg-[#fdf9f7] p-5 gap-3 mt-12 rounded-xl w-[52vw]">
+                <Table.Root
+                  colorPalette={"white"}
+                  interactive
+                  size="lg"
+                  rounded={"4xl"}
+                  showColumnBorde
+                  width={"100%"}
+                >
+                  <Table.Header className="bg-[#fdf9f7]">
+                    <Table.Row className="bg-[#fdf9f7]">
+                      <Table.ColumnHeader className="!text-black font-bold">
+                        Product
+                      </Table.ColumnHeader>
+                      <Table.ColumnHeader className="!text-black font-bold">
+                        Email
+                      </Table.ColumnHeader>
+                      <Table.ColumnHeader className="!text-black font-bold">
+                        Role
+                      </Table.ColumnHeader>
+                      <Table.ColumnHeader className="!text-black font-bold">
+                        Edit
+                      </Table.ColumnHeader>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body className="bg-[#fdf9f7]">
+                    {data.map((item) => (
+                      <Table.Row key={item.name} className="bg-[#fdf9f7]">
+                        <Table.Cell>
+                          <div className=" flex  items-center gap-4">
+                            {item.name}
 
-                        {item.name === session?.user?.name && (
-                          <div className=" bg-green-200 text-green-900 flex  justify-center items-center rounded-md px-1 py-1 text-[8px]">
-                            Current user
+                            {item.name === session?.user?.name && (
+                              <div className=" bg-green-200 text-green-900 flex  justify-center items-center rounded-md px-1  text-[8px]">
+                                Current user
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </td>
-                      <td className=" py-2 px-5">{item.role}</td>
-                      <td className=" py-2 px-5 hover:scale-[1.1] cursor-pointer  transition-all">
-                        <Settings size={16} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                        </Table.Cell>
+                        <Table.Cell>{item.email}</Table.Cell>
+                        <Table.Cell>{item.role}</Table.Cell>
+
+                        <Table.Cell>
+                          {
+                            <Settings
+                              onClick={() => {
+                                setSelectedUser({
+                                  name: item.name,
+                                  role: item.role,
+                                  email: item.email,
+                                });
+                                setIsModalStatus((prev) => !prev);
+                              }}
+                              className=" hover:scale-105 transition-all  cursor-pointer"
+                              size={16}
+                            />
+                          }
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table.Root>
+              </div>
             ) : (
               <div>Loading....</div>
             )}
+          </div>
+          <div
+            className={` absolute left-0 right-0 top-0 bottom-0 ${
+              !isModalStatus && "pointer-events-none"
+            } `}
+          >
+            {" "}
+            <EditEmployeeModal
+              selectedData={selectedUser}
+              isModalSetter={setIsModalStatus}
+              isModalOpen={isModalStatus}
+            />
           </div>
         </>
       ) : (
