@@ -20,5 +20,11 @@ export const apiList = {
     api: '/api/patch-employee-data',
     desc: 'Patch employee data',
     access: ["ADMIN"]
+  },
+  deleteUser: {
+    api: '/api/delete-user',
+    desc: 'Delete user',
+    access: ["ADMIN", "MANAGER"]
+
   }
 }

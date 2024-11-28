@@ -95,7 +95,7 @@ const handler = NextAuth({
       if (user) {
         const dbUser = await prisma.user.findUnique({
           where: { email: user.email },
-          select: { email: true, company: true, role: true },
+          select: { email: true, company: true, role: true, department: true },
         });
         if (dbUser) {
           token.role = dbUser.role;
@@ -104,11 +104,12 @@ const handler = NextAuth({
       } else {
         const dbUser = await prisma.user.findUnique({
           where: { email: token.email },
-          select: { email: true, company: true, role: true },
+          select: { email: true, company: true, role: true, department: true },
         });
         if (dbUser) {
           token.role = dbUser.role;
           token.company = dbUser.company;
+          token.department = dbUser.department
         }
       }
       return token;
@@ -117,6 +118,7 @@ const handler = NextAuth({
       if (token) {
         session.user.role = token.role;
         session.user.company = token.company;
+        session.user.department = token.department
       }
       return session;
     },

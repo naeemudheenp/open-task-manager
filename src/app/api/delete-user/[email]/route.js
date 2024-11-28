@@ -3,32 +3,20 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { apiList } from "../../../constants/api-list";
 
-export async function PATCH(req) {
+export async function DELETE(req, { params }) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   if (!token) {
     return new Response("Unauthorized", { status: 401 });
   }
 
   const prisma = new PrismaClient();
-  const body = await req.json();
 
-  const { email, role, depts, ownerRole } = body;
-
-  if (apiList?.patchEmployeeData?.access?.includes(ownerRole)) {
-    if (!token) {
-      return new Response("Unauthorized", { status: 401 });
-    }
-  }
+  const { email } = params;
 
   try {
-    await prisma.user.update({
+    await prisma.user.delete({
       where: { email: email },
-      data: {
-        role: role,
-        department: depts
-      },
     });
 
     return NextResponse.json({}, { status: 200 });

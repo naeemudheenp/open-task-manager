@@ -12,6 +12,13 @@ export async function GET(req) {
     const data = await prisma.user.findMany({
       where: {
         company: company
+      },
+      select: {
+        company: true,
+        email: true,
+        role: true,
+        name: true,
+        department: true
       }
     })
     return NextResponse.json(data, { status: 200 })

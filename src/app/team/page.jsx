@@ -16,12 +16,18 @@ export default function Employees() {
   const [isModalStatus, setIsModalStatus] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
 
-  async function getEmployees() {
+  async function getEmployees(session) {
     try {
       const response = await axios.get(
         `${apiList.getEmployees.api}?company=${session?.user?.company}`
       );
-      setData(response.data);
+      console.log(session, response, "response");
+
+      setData(
+        response.data.filter(
+          (item) => item.department === session.user?.department
+        )
+      );
     } catch (error) {
       console.error("Error fetching employees:", error);
     }
@@ -29,7 +35,7 @@ export default function Employees() {
 
   useEffect(() => {
     if (session?.user?.company) {
-      getEmployees();
+      getEmployees(session);
     }
   }, [session?.user?.company, isModalStatus]);
 
@@ -43,7 +49,7 @@ export default function Employees() {
 
   return (
     <section className="flex bg-white h-screen">
-      {session ? (
+      {session && securedRoutes[2].access.includes(session?.user?.role) ? (
         <>
           <SidePanel active={securedRoutes[2].name} />
           <div className="pt-14 pl-16  text-white">
@@ -80,32 +86,31 @@ export default function Employees() {
                         <Table.Cell>
                           <div className=" flex  items-center gap-4">
                             {item.name}
-
-                            {item.name === session?.user?.name && (
-                              <div className=" bg-green-200 text-green-900 flex  justify-center items-center rounded-md px-1  text-[8px]">
-                                Current user
-                              </div>
-                            )}
                           </div>
                         </Table.Cell>
                         <Table.Cell>{item.email}</Table.Cell>
                         <Table.Cell>{item.role}</Table.Cell>
 
                         <Table.Cell>
-                          {
+                          {item.name === session?.user?.name ? (
+                            <div className=" bg-green-200 text-green-900 flex  justify-center items-center rounded-md px-1  text-[8px]">
+                              Current user
+                            </div>
+                          ) : (
                             <Settings
                               onClick={() => {
                                 setSelectedUser({
                                   name: item.name,
                                   role: item.role,
                                   email: item.email,
+                                  department: item.department,
                                 });
                                 setIsModalStatus((prev) => !prev);
                               }}
                               className=" hover:scale-105 transition-all  cursor-pointer"
                               size={16}
                             />
-                          }
+                          )}
                         </Table.Cell>
                       </Table.Row>
                     ))}

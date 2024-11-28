@@ -11,7 +11,8 @@ model User {
   id        Int      @id @default(autoincrement())
   name      String?
   email     String   @unique
-  company     String?  
+  company   String?
+  department Department? @default(UNASSIGNED) 
   password  String?
   role      Role     @default(USER)
   createdAt DateTime @default(now())
@@ -22,4 +23,11 @@ enum Role {
   ADMIN
   MANAGER
   USER
+}
+
+enum Department {
+  HR
+  ENGINEERING
+  ACCOUNTS
+  UNASSIGNED
 }

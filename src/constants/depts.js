@@ -1,0 +1,1 @@
+export const depts = ["HR", "ENGINEERING", "ACCOUNTS", "UNASSIGNED"]

@@ -11,7 +11,7 @@ export const securedRoutes = [
   },
   {
     name: 'Team',
-    access: ['ADMIN', 'MANAGER'],
+    access: ['MANAGER'],
     url: '/team'
   },
 

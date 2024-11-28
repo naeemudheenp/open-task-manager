@@ -21,7 +21,8 @@ export default function Employees() {
       const response = await axios.get(
         `${apiList.getEmployees.api}?company=${session?.user?.company}`
       );
-      setData(response.data);
+
+      setData(response?.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
     }
@@ -43,13 +44,13 @@ export default function Employees() {
 
   return (
     <section className="flex bg-white h-screen">
-      {session ? (
+      {session && securedRoutes[1].access.includes(session?.user?.role) ? (
         <>
           <SidePanel active={securedRoutes[1].name} />
           <div className="pt-14 pl-16  text-white">
             <h2 className="text-3xl font-bold text-black"> Employee</h2>
             {data ? (
-              <div className="!text-black bg-[#fdf9f7] p-5 gap-3 mt-12 rounded-xl w-[52vw]">
+              <div className="!text-black bg-[#fdf9f7] p-5 gap-3 mt-12 rounded-xl w-[72vw]">
                 <Table.Root
                   colorPalette={"white"}
                   interactive
@@ -61,13 +62,16 @@ export default function Employees() {
                   <Table.Header className="bg-[#fdf9f7]">
                     <Table.Row className="bg-[#fdf9f7]">
                       <Table.ColumnHeader className="!text-black font-bold">
-                        Product
+                        Name
                       </Table.ColumnHeader>
                       <Table.ColumnHeader className="!text-black font-bold">
                         Email
                       </Table.ColumnHeader>
                       <Table.ColumnHeader className="!text-black font-bold">
                         Role
+                      </Table.ColumnHeader>
+                      <Table.ColumnHeader className="!text-black font-bold">
+                        Department
                       </Table.ColumnHeader>
                       <Table.ColumnHeader className="!text-black font-bold">
                         Edit
@@ -80,32 +84,32 @@ export default function Employees() {
                         <Table.Cell>
                           <div className=" flex  items-center gap-4">
                             {item.name}
-
-                            {item.name === session?.user?.name && (
-                              <div className=" bg-green-200 text-green-900 flex  justify-center items-center rounded-md px-1  text-[8px]">
-                                Current user
-                              </div>
-                            )}
                           </div>
                         </Table.Cell>
                         <Table.Cell>{item.email}</Table.Cell>
                         <Table.Cell>{item.role}</Table.Cell>
+                        <Table.Cell>{item.department}</Table.Cell>
 
                         <Table.Cell>
-                          {
+                          {item.name === session?.user?.name ? (
+                            <div className=" bg-green-200 text-green-900 flex  justify-center items-center rounded-md px-1  text-[8px]">
+                              Current user
+                            </div>
+                          ) : (
                             <Settings
                               onClick={() => {
                                 setSelectedUser({
                                   name: item.name,
                                   role: item.role,
                                   email: item.email,
+                                  department: item.department,
                                 });
                                 setIsModalStatus((prev) => !prev);
                               }}
                               className=" hover:scale-105 transition-all  cursor-pointer"
                               size={16}
                             />
-                          }
+                          )}
                         </Table.Cell>
                       </Table.Row>
                     ))}
