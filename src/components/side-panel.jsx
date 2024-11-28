@@ -4,7 +4,7 @@ import { securedRoutes } from "../constants/secured-routes";
 import { getRoleBasedRender } from "../helpers/getRoleBasedRender";
 import { signOut, useSession } from "next-auth/react";
 
-export function SidePanel() {
+export function SidePanel({ active }) {
   const session = useSession();
 
   if (session.status === "loading") {
@@ -24,8 +24,8 @@ export function SidePanel() {
   }
 
   return (
-    <div className=" relative flex basis-[21%] bg-[#fdf9f7] h-full  pl-5 pt-14 text-black flex-col gap-12">
-      <h2 className=" text-3xl font-bold">openTaskManager</h2>
+    <div className=" relative flex basis-[17%] bg-[#fdf9f7] h-full  pl-12 pt-14 text-black flex-col gap-8">
+      <h2 className=" text-xl font-bold">openTaskManager</h2>
       {securedRoutes.map((item) => {
         const userAccess = getRoleBasedRender(
           session?.data?.user?.role,
@@ -34,9 +34,7 @@ export function SidePanel() {
         if (userAccess) {
           return (
             <Link
-              className={`${
-                userAccess ? " bg-red-500" : " bg-green-600"
-              } text-xl`}
+              className={` text-md ${active === item.name && " font-bold"}`}
               href={item.url}
               key={item.name}
             >

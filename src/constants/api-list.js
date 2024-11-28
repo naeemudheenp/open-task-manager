@@ -6,5 +6,9 @@ export const apiList = {
   checkUserIsAlreadyRegistered: {
     api: "/api/check-user-already-registered",
     desc: 'To check whether user already registered.'
+  },
+  getEmployees: {
+    api: '/api/get-employees',
+    desc: 'Get employee list.'
   }
 }

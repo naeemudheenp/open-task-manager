@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { SidePanel } from "../../components/side-panel";
 import { FormCompanyName } from "../../components/form-company-name";
+import { securedRoutes } from "@/constants";
 export default function Home() {
   const session = useSession();
   if (session.status === "loading") {
@@ -24,7 +25,7 @@ export default function Home() {
   }
   return (
     <section className=" flex bg-white h-screen">
-      <SidePanel />
+      <SidePanel active={securedRoutes[0].name} />
     </section>
   );
 }
