@@ -3,8 +3,13 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { signInTypes } from "@/constants"
+import { getToken } from "next-auth/jwt";
 
 export async function GET(req) {
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  if (!token) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const prisma = new PrismaClient();
   const { searchParams } = new URL(req.url);
   const email = searchParams.get('email')
