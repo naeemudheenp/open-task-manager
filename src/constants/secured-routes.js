@@ -8,5 +8,11 @@ export const securedRoutes = [
     name: 'Employees',
     access: ['ADMIN'],
     url: '/employees'
-  }
+  },
+  {
+    name: 'Team',
+    access: ['ADMIN', 'MANAGER'],
+    url: '/team'
+  },
+
 ]
