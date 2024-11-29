@@ -145,14 +145,10 @@ export default function Home() {
         </div>
       </div>
       <p className=" text-[12px] text-center">
-        Note to evaluators: Google Sign-In is restricted to registered accounts
-        <br></br>
-        (configured in the Google Cloud Console) as the application is in test
-        <br></br>
-        mode and not yet published. A video demonstration of the feature is
-        <br></br>
-        attached on GitHub. If you need additional emails added to the<br></br>
-        registered list, please let me know.
+        Note to Evaluators: Google Sign-In is restricted for certain accounts as
+        the app has not been published.<br></br> If you are unable to sign in
+        using Google, please share your email address with me so I can add it to
+        the Google Cloud Console.
       </p>
     </>
   );
