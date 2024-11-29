@@ -126,5 +126,15 @@ npm run dev
 ```
 Open http://localhost:3000 in your browser.
 
+### Google Sign-In Video
+Click the link below to watch the Google Sign-In demonstration:
+
+[Google Sign-In Video](https://drive.google.com/file/d/1EO-b6LB144Uw8GbAYC0MKpN6zftdzK5A/view?usp=sharing)
+
 ![Project Screenshot](./assets/2.png)
+![Project Screenshot](./assets/3.png)
+![Project Screenshot](./assets/4.png)
+![Project Screenshot](./assets/5.png)
+![Project Screenshot](./assets/6.png)
+![Project Screenshot](./assets/7.png)
 
