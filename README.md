@@ -109,12 +109,7 @@ Run migrations to set up the database schema:
 npx prisma migrate dev --name init
 ```
 
-### 5. Set Up the Database
-Run migrations to set up the database schema:
 
-```bash
-npx prisma migrate dev --name init
-```
 
 ### Generate the Prisma Client
 Run the following command to generate the Prisma client:
