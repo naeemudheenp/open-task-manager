@@ -54,7 +54,7 @@ export default function Employees() {
         <>
           <SidePanel active={securedRoutes[2].name} />
           <div className="pt-14 pl-16  text-white">
-            <h2 className="text-3xl font-bold text-black"> Employee</h2>
+            <h2 className="text-3xl font-bold text-black"> Team</h2>
             {data ? (
               <div className="!text-black bg-[#fdf9f7] p-5 gap-3 mt-12 rounded-xl w-[52vw]">
                 <Table.Root
