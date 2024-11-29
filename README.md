@@ -58,9 +58,7 @@ Visible only to **Manager**.
 
 ---
 
-## Environment Variables
 
-Ensure the following environment variables are set in your `.env` file:
 
 
 
