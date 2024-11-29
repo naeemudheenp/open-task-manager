@@ -66,7 +66,7 @@ Visible only to **Manager**.
 
 - **Google Sign-In Restriction**: The application is in test mode, and Google Sign-In is limited to registered accounts (configured in the Google Cloud Console).  
 - A video demonstration of the feature is attached in the repository.  
-- If additional emails need to be added to the allowed list, feel free to contact the developer.
+- If additional emails need to be added to the allowed list, feel free to contact.
 
 
 ## Project Setup
