@@ -9,12 +9,15 @@ import { useState } from "react";
 import { Settings } from "lucide-react";
 import { Table } from "@chakra-ui/react";
 import { EditEmployeeModal } from "@/components/modals/edit-employee";
+import { useUser } from "@/hooks/isUserAllowed";
 
 export default function Employees() {
   const { data: session, status } = useSession();
   const [data, setData] = useState();
   const [isModalStatus, setIsModalStatus] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
+
+  useUser();
 
   async function getEmployees(session) {
     try {

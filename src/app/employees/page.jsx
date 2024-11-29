@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { Settings } from "lucide-react";
+import { useUser } from "@/hooks/isUserAllowed";
 import { Table } from "@chakra-ui/react";
 import { EditEmployeeModal } from "@/components/modals/edit-employee";
 
@@ -16,6 +17,7 @@ export default function Employees() {
   const [isModalStatus, setIsModalStatus] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
 
+  useUser();
   async function getEmployees() {
     try {
       const response = await axios.get(
