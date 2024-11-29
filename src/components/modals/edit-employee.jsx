@@ -1,5 +1,4 @@
 import {
-  DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
@@ -7,8 +6,6 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTitle,
-  DialogTrigger,
-  Button,
 } from "@chakra-ui/react";
 import { Toaster, toaster } from "@/components/ui/toaster";
 
@@ -79,7 +76,7 @@ export const EditEmployeeModal = ({
                 <li className=" items-center !z-[100] mb-2 flex gap-4 text-[12px]">
                   Change role:
                   <select
-                    className="  bg-transparent "
+                    className="bg-transparent "
                     value={selectedRole}
                     onChange={(e) => setSelectedRole(e.target.value)}
                   >

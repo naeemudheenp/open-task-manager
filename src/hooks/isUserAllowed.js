@@ -22,7 +22,7 @@ const fetchUser = async (email, company) => {
 export const useUser = () => {
   //We can also use push notification method if we dont want to poll server every time.
   //as there is not enough time i am  going with this method.
-  //To check whther user is present or if not there then for logout
+  //To check whther user is present or if not there then force logout
   const { data: session, status } = useSession();
 
   const {

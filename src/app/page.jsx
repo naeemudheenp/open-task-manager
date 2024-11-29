@@ -51,7 +51,6 @@ export default function Home() {
         title: "Error",
         description: "Unable to login.",
       });
-      console.log("Unable to create user.");
     }
   }
 

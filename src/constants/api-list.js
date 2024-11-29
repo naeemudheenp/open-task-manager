@@ -26,5 +26,22 @@ export const apiList = {
     desc: 'Delete user',
     access: ["ADMIN", "MANAGER"]
 
+  },
+  createTask: {
+    api: '/api/create-task',
+    desc: 'create task',
+    access: ["ADMIN", "MANAGER", "USER"]
+  },
+  getTask: {
+    api: '/api/get-tasks',
+    desc: 'get task',
+    access: ["ADMIN", "MANAGER", "USER"]
+  },
+  patchTaskData: {
+
+    api: '/api/patch-task-data',
+    desc: 'update task',
+    access: ["ADMIN", "MANAGER", "USER"]
   }
+
 }

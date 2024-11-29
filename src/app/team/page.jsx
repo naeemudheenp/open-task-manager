@@ -3,9 +3,8 @@
 import axios from "axios";
 import { SidePanel } from "../../components/side-panel";
 import { apiList, securedRoutes } from "@/constants";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import { Settings } from "lucide-react";
 import { Table } from "@chakra-ui/react";
 import { EditEmployeeModal } from "@/components/modals/edit-employee";
@@ -24,7 +23,6 @@ export default function Employees() {
       const response = await axios.get(
         `${apiList.getEmployees.api}?company=${session?.user?.company}`
       );
-      console.log(session, response, "response");
 
       setData(
         response.data.filter(

@@ -11,7 +11,6 @@ export async function PATCH(req) {
   }
   const prisma = new PrismaClient();
   const body = await req.json();
-
   const { email, company } = body;
 
   if (!email || !company) {
@@ -30,19 +29,16 @@ export async function PATCH(req) {
       where: { email: email },
       data: {
         company: company,
-        role: !isCompanyExist ? "ADMIN" : "USER",//Assigning admin role if the first user of the company.
+        role: !isCompanyExist ? "ADMIN" : "USER", //Assigning admin role if the first user of the company.
       },
     });
 
-    return NextResponse.json(
-      {},
-      { status: 200 }
-    );
+    return NextResponse.json({}, { status: 200 });
   } catch (error) {
     console.error(error, "unable to add company");
     return NextResponse.json(
       {
-        message: "An error occurred while updating the user.",
+        message: "An error occurred while updating.",
       },
       { status: 500 }
     );

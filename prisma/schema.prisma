@@ -19,10 +19,25 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+model Tasks {
+  id        Int      @id @default(autoincrement())
+  owner      String
+  title     String
+  description String 
+  company String
+  department Department? @default(UNASSIGNED) 
+  status     Status  @default(TODO)
+}
+
 enum Role {
   ADMIN
   MANAGER
   USER
+}
+enum Status {
+  TODO
+  Running
+  DONE
 }
 
 enum Department {

@@ -8,16 +8,9 @@ export async function GET(req) {
   if (allowed) {
     const { searchParams } = new URL(req.url);
     const company = searchParams.get("company");
-    const data = await prisma.user.findMany({
+    const data = await prisma.tasks.findMany({
       where: {
         company: company,
-      },
-      select: {
-        company: true,
-        email: true,
-        role: true,
-        name: true,
-        department: true,
       },
     });
     return NextResponse.json(data, { status: 200 });

@@ -25,8 +25,6 @@ const handler = NextAuth({
         //Credential mode
         const { email, password, company } = credentials;
 
-
-
         let existingUser = await prisma.user.findUnique({
           where: { email },
         });
@@ -42,8 +40,8 @@ const handler = NextAuth({
             data: {
               email: email,
               name: email.split("@")[0],
-              role: !isCompanyExist ? "ADMIN" : "USER",//Making first user as admin
-              password: await bcrypt.hash(password, 10),//crypting password
+              role: !isCompanyExist ? "ADMIN" : "USER", //Making first user as admin
+              password: await bcrypt.hash(password, 10), //crypting password
               company: company,
             },
           });
@@ -109,7 +107,7 @@ const handler = NextAuth({
         if (dbUser) {
           token.role = dbUser.role;
           token.company = dbUser.company;
-          token.department = dbUser.department
+          token.department = dbUser.department;
         }
       }
       return token;
@@ -118,7 +116,7 @@ const handler = NextAuth({
       if (token) {
         session.user.role = token.role;
         session.user.company = token.company;
-        session.user.department = token.department
+        session.user.department = token.department;
       }
       return session;
     },
@@ -127,7 +125,7 @@ const handler = NextAuth({
   pages: {
     signIn: "/",
     error: "/login-error",
-    signOut: '/'
+    signOut: "/",
   },
 
   secret: process.env.NEXTAUTH_SECRET,
