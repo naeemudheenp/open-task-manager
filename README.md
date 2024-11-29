@@ -126,3 +126,5 @@ npm run dev
 ```
 Open http://localhost:3000 in your browser.
 
+![Project Screenshot](./assets/2.png)
+
