@@ -1,4 +1,4 @@
-# Open Task Manager
+# Open Task Manager | https://open-task-manager.vercel.app/
 
 Open Task Manager is a task management system built with **Next.js**, **NextAuth**,**TanStack React Query** and **PostgreSQL**, designed to provide a secure and role-based platform for managing tasks across an organization.
 
