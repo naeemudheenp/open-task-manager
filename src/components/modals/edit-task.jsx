@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-export const EditTaskModal = ({ isModalOpen, isModalSetter, selectedData }) => {
+export const EditTaskModal = ({ isModalOpen, isModalSetter }) => {
   const [open, setOpen] = useState(isModalOpen);
   const [taskName, settaskName] = useState("");
   const [taskDesc, setTaskDesc] = useState("");

@@ -1,5 +1,5 @@
 
 
-export async function middleware(req) {
+export async function middleware() {
 }
 // @todao middleware
